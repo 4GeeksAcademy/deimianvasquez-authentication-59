@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Toaster, toast } from "sonner"
 
 const initialUserState = {
     lastname: "",
@@ -48,9 +49,9 @@ const Register = () => {
 
 
         } else if (response.status == 409) {
-            alert("Usuario ya existe")
+            toast.error("El uaurio ya existe")
         } else {
-            alert("Error al registrar uausio intente nuevamente")
+            toast.error("Error al registrar uausio intente nuevamente")
         }
     }
 
@@ -58,6 +59,7 @@ const Register = () => {
 
     return (
         <div className="container">
+            <Toaster position="top-right" />
             <div className="vh-100  d-flex flex-column home-container justify-content-center" >
                 <div className="row justify-content-center my-5 p-4">
                     <h2 className="text-center">Registrate en mi web de lista de tareas</h2>

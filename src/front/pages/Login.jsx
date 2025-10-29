@@ -42,7 +42,24 @@ const Login = () => {
 
             if (response.ok) {
                 dispatch({ type: "SET_TOKEN", payload: data.token })
+
+
+                const responseUser = await fetch(`${urlBase}/me`, {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${data.token}`
+                    }
+                })
+
+                const dataUser = await responseUser.json()
+                dispatch({
+                    type: "SET_USER",
+                    payload: dataUser.user
+                })
+
                 localStorage.setItem("token", data.token)
+                localStorage.setItem("user", JSON.stringify(dataUser.user))
 
                 navigate("/")
 

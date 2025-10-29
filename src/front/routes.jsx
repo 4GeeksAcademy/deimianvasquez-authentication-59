@@ -11,6 +11,8 @@ import { Single } from "./pages/Single";
 import { Demo } from "./pages/Demo";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import Tasks from "./pages/Tasks"
+import ProtectedRoute from "./components/ProtectedRoute";
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -25,7 +27,11 @@ export const router = createBrowserRouter(
 
       {/* Nested Routes: Defines sub-routes within the BaseHome component. */}
       <Route path="/" element={<Home />} />
-      <Route path="/todos" element={<h1>Todos</h1>} />
+      <Route path="/todos" element={
+        <ProtectedRoute>
+          <Tasks />
+        </ProtectedRoute>
+      } />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
 

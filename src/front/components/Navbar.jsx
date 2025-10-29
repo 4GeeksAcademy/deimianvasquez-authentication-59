@@ -3,7 +3,14 @@ import useGlobalReducer from "../hooks/useGlobalReducer";
 
 export const Navbar = () => {
 
-	const { store } = useGlobalReducer()
+	const { store, dispatch } = useGlobalReducer()
+
+
+	const logout = () => {
+		dispatch({ type: "SET_TOKEN", payload: null })
+		localStorage.removeItem("token")
+		localStorage.removeItem("user")
+	}
 
 	return (
 		<nav className="navbar navbar-expand-sm navbar-dark bg-dark">
@@ -35,7 +42,10 @@ export const Navbar = () => {
 					{
 						store.token ? (
 							<div>
-								<button>Cerrar Sesión</button>
+								<button
+									className="btn btn-outline-secondary ms-3"
+									onClick={() => logout()}
+								>Cerrar Sesión</button>
 							</div>
 						) : (
 							<div>
