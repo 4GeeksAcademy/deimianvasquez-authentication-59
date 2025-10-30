@@ -23,14 +23,11 @@ export const Home = () => {
 /*
 
 	
-	2.- Método para eviar correos 
-	3.- recuperar contraseña
-	5.- Eliminar el input del avatar (al guaradar user)
-	6.- Crear la sesión de perfil tal como lo pide el diseño
-	7.- Al registrar usuario enviar correo de activación
-	8.- Usar dos contraseñas para validar que sean iguales
-	9.- Cerrar sesión
-	10.- Elimitar los token de sesión cerrada 
-	11.- Lanzar a producción
+	1.- Método para eviar correos 
+	2.- recuperar contraseña
+	3.- Al registrar usuario enviar correo de activación
+	4.- Usar dos contraseñas para validar que sean iguales
+	5.- Cerrar sesión (Puede mejorar)
+	6.- Lanzar a producción
 
 */
