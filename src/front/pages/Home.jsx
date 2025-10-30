@@ -25,7 +25,6 @@ export const Home = () => {
 	
 	2.- Método para eviar correos 
 	3.- recuperar contraseña
-	4.- Integrar el avatar (Integrar con cloudinary)
 	5.- Eliminar el input del avatar (al guaradar user)
 	6.- Crear la sesión de perfil tal como lo pide el diseño
 	7.- Al registrar usuario enviar correo de activación

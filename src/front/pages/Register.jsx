@@ -1,11 +1,11 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { Toaster, toast } from "sonner"
 
 const initialUserState = {
     lastname: "",
     email: "",
-    avatar: "",
+    avatar: null,
     password: ""
 }
 
@@ -15,7 +15,20 @@ const urlBase = import.meta.env.VITE_BACKEND_URL
 const Register = () => {
 
     const [user, setUser] = useState(initialUserState)
+    const fileInputRef = useRef(null)
+
     const navigate = useNavigate()
+
+
+    const handleFileChange = (event) => {
+        const file = event.target.file[0]
+
+        setUser({
+            ...user,
+            avatar: file
+        })
+
+    }
 
     const handleChange = ({ target }) => {
         setUser({
@@ -45,11 +58,12 @@ const Register = () => {
 
         if (response.ok) {
             setUser(initialUserState)
+            fileInputRef.current.value = null
 
             setTimeout(() => {
                 navigate("/login")
 
-            }, 2000)
+            }, 1500)
 
 
         } else if (response.status == 409) {
@@ -107,10 +121,9 @@ const Register = () => {
                                     id="txtAvatar"
                                     name="avatar"
                                     accept="image/*"
-                                    onChange={(event) => {
-                                        setUser({ ...user, avatar: event.target.files[0] })
-                                    }}
-                                // value={user.avatar} No usar value en input file
+                                    ref={fileInputRef}
+                                    onChange={handleFileChange}
+
                                 />
                             </div>
 
