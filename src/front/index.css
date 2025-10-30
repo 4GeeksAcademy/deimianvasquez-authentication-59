@@ -7,3 +7,8 @@
 .bordered {
   border-bottom: 1px solid white;
 }
+.welcome-image {
+  width: 300px;
+  border-radius: 100%;
+  height: 300px;
+}

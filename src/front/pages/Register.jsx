@@ -28,16 +28,20 @@ const Register = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault()
-
         // validar que todos los campos esten llenos
+
+        const formData = new FormData()
+        formData.append("lastname", user.lastname)
+        formData.append("email", user.email)
+        formData.append("password", user.password)
+        formData.append("avatar", user.avatar)
+
+
         const response = await fetch(`${urlBase}/register`, {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(user)
+            body: formData
         })
-        const data = await response.json()
+        // const data = await response.json()
 
         if (response.ok) {
             setUser(initialUserState)

@@ -22,7 +22,7 @@ export const Home = () => {
 
 /*
 
-	1.- Protejer las rutas, Todos <--- este componente
+	
 	2.- Método para eviar correos 
 	3.- recuperar contraseña
 	4.- Integrar el avatar (Integrar con cloudinary)
@@ -32,5 +32,6 @@ export const Home = () => {
 	8.- Usar dos contraseñas para validar que sean iguales
 	9.- Cerrar sesión
 	10.- Elimitar los token de sesión cerrada 
+	11.- Lanzar a producción
 
 */
