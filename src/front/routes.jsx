@@ -13,6 +13,8 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Tasks from "./pages/Tasks"
 import ProtectedRoute from "./components/ProtectedRoute";
+import ResetPass from "./pages/ResetPass";
+import UpdatePassword from "./pages/UpdatePasword";
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -34,9 +36,15 @@ export const router = createBrowserRouter(
       } />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
+      <Route path="/recovery-password" element={<ResetPass />} />
 
       <Route path="/single/:theId" element={<Single />} />  {/* Dynamic route for single items */}
       <Route path="/demo" element={<Demo />} />
+
+      <Route path="/password-update" element={<UpdatePassword />} />
+
+
+      <Route path="*" element={<h1>Not found</h1>} />
     </Route>
   )
 );

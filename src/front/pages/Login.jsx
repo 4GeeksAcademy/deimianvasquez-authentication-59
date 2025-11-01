@@ -115,7 +115,7 @@ const Login = () => {
                         Registrarme
                     </Link>
 
-                    <Link>
+                    <Link to={"/recovery-password"}>
                         Olvidó su Contraseña
                     </Link>
                 </div>
