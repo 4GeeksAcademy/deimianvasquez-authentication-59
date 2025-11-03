@@ -20,7 +20,7 @@ const UpdatePassword = () => {
                     "Content-Type": "application/json"
                 },
 
-                body: JSON.stringify(newPasword)
+                body: JSON.stringify({ password: newPasword })
             })
 
             console.log(response)
