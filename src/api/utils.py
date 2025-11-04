@@ -89,7 +89,7 @@ def es_correo_valido(correo: str) -> bool:
 
 def send_email(subject, to, body):
     smtp_host = os.getenv("SMTP_HOST")
-    smtp_port = os.getenv("SMTP_PORT")
+    smtp_port = int(os.getenv("SMTP_PORT"))
     email_address = os.getenv("EMAIL_ADDRESS")
     email_password = os.getenv("EMAIL_PASSWORD")
 
@@ -111,7 +111,10 @@ def send_email(subject, to, body):
 
     try:
         context = ssl.create_default_context()
-        with smtplib.SMTP_SSL(smtp_host, smtp_port, context=context) as server:
+
+        with smtplib.SMTP(smtp_host, smtp_port, timeout=10) as server:
+            server.starttls(context=context)
+
             server.login(email_address, email_password)
             server.sendmail(smtp_host, to, message.as_string())
             return True
