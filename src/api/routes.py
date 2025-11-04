@@ -166,7 +166,7 @@ def recovery_password():
     message = f"""
                 <div>
                     <h1>Recuperación de contraseña, ingresa en el siguiente link</h1>
-                    <a 
+                    <a
                         href="{os.getenv("VITE_FRONTEND_URL")}/password-update?token={recovery_token}"
                     >
                         ir a recuperar contraseña
@@ -198,7 +198,7 @@ def update_password():
 
     if user is not None:
         salt = b64encode(os.urandom(32)).decode("utf-8")
-        password = generate_password_hash(f"{password.get("password")}{salt}")
+        password = generate_password_hash(f'{password.get("password")}{salt}')
 
         user.salt = salt
         user.password = password
