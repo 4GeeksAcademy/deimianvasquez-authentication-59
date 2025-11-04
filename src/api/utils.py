@@ -116,7 +116,7 @@ def send_email(subject, to, body):
             server.starttls(context=context)
 
             server.login(email_address, email_password)
-            server.sendmail(smtp_host, to, message.as_string())
+            server.sendmail(email_address, to, message.as_string())
             return True
 
     except Exception as error:
