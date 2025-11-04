@@ -1,5 +1,6 @@
 import { useState } from "react"
-import { useSearchParams } from "react-router-dom"
+import { useSearchParams, useNavigate } from "react-router-dom"
+import { Toaster, toast } from "sonner"
 
 const urlBase = import.meta.env.VITE_BACKEND_URL
 
@@ -8,7 +9,7 @@ const UpdatePassword = () => {
 
     const [searchParams, _] = useSearchParams()
 
-
+    const navigate = useNavigate()
 
     const handleSubmit = async (event) => {
         event.preventDefault()
@@ -23,7 +24,12 @@ const UpdatePassword = () => {
                 body: JSON.stringify({ password: newPasword })
             })
 
-            console.log(response)
+            if (response.ok) {
+                toast.success("Contraseña actualizada exitosamente")
+                setTimeout(() => {
+                    navigate("/login")
+                }, 3000)
+            }
 
         } catch (error) {
             console.log("error")
@@ -35,6 +41,7 @@ const UpdatePassword = () => {
     return (
         <div className="container">
             <div className="row justify-content-center">
+                <Toaster position="top-right" />
                 <h1> Actualizar contraseña :(</h1>
                 <div className="col-12 col-md-6 border py-4">
                     <form
@@ -46,7 +53,7 @@ const UpdatePassword = () => {
                             <input
                                 type="password"
                                 className="form-control"
-                                placeholder="Contraseña"
+                                placeholder="Ingresa nueva contraseña"
                                 id="btnUpdatePassword"
                                 name="email"
                                 value={newPasword}

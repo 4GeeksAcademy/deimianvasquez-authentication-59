@@ -15,6 +15,8 @@ const urlBase = import.meta.env.VITE_BACKEND_URL
 const Register = () => {
 
     const [user, setUser] = useState(initialUserState)
+    const [confirmPassword, setConfirmPassword] = useState("")
+    const [errors, setErrors] = useState({}) // {password: "", confirm: }
     const fileInputRef = useRef(null)
 
     const navigate = useNavigate()
@@ -38,10 +40,36 @@ const Register = () => {
 
     }
 
+    const handleConfirmChange = (event) => {
+        setConfirmPassword(event.target.value)
+
+        if (user.password && event.target.value !== user.password) {
+            setErrors((prev) => ({
+                ...prev,
+                confirm: "Las contraseñas no coinciden"
+            }))
+        } else {
+            setErrors(prev => ({
+                ...prev,
+                confirm: null
+            }))
+        }
+    }
+
 
     const handleSubmit = async (event) => {
         event.preventDefault()
         // validar que todos los campos esten llenos
+
+
+        if (user.password !== confirmPassword) {
+            setErrors((prev) => ({
+                ...prev,
+                confirm: "Las contraseñas no coinciden"
+            }))
+
+            return
+        }
 
         const formData = new FormData()
         formData.append("lastname", user.lastname)
@@ -139,6 +167,22 @@ const Register = () => {
                                     onChange={handleChange}
                                     value={user.password}
                                 />
+                            </div>
+
+                            <div className="form-group mb-3">
+                                <label htmlFor="btnValidatePassword">Vuelve a escribir la contraseña</label>
+                                <input
+                                    type="password"
+                                    placeholder="Contraseña nuevamente"
+                                    className="form-control"
+                                    id="btnValidatePassword"
+                                    name="validatePassword"
+                                    onChange={handleConfirmChange}
+                                    value={confirmPassword}
+                                />
+                                {
+                                    errors.confirm && <div className="text-danger mt-2">{errors.confirm} </div>
+                                }
                             </div>
 
 

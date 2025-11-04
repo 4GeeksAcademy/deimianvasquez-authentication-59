@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { Toaster, toast } from "sonner"
 
 
 const urlBase = import.meta.env.VITE_BACKEND_URL
@@ -27,7 +28,10 @@ const ResetPass = () => {
             })
 
             if (response.ok) {
-                console.log("Vemos que hacer", response)
+                toast.success("Revisa tu correo para actualizar la contraseña")
+                setEmail({
+                    email: ""
+                })
             }
 
         } catch (error) {
@@ -39,7 +43,8 @@ const ResetPass = () => {
     return (
         <div className="container">
             <div className="row justify-content-center">
-                <h1> Recuperación de contraseña :(</h1>
+                <Toaster position="top-right" />
+                <h1 className="text-center"> Recuperación de contraseña :(</h1>
                 <div className="col-12 col-md-6 border py-4">
                     <form
                         onSubmit={handleSubmit}

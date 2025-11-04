@@ -36,7 +36,6 @@ def register_user():
         "password": data_form.get("password"),
         "lastname": data_form.get("lastname"),
         "avatar": data_files.get("avatar"),
-        "is_active": True,
         "salt": 1
     }
 
@@ -65,8 +64,8 @@ def register_user():
         email=data["email"],
         password=password,
         lastname=data["lastname"],
-        is_active=data["is_active"],
         avatar=avatar,
+        is_active=False,
         salt=salt
     )
 
@@ -74,6 +73,21 @@ def register_user():
 
     try:
         db.session.commit()
+
+        recovery_token = create_access_token(identity=str(
+            new_user.id), expires_delta=timedelta(minutes=15))
+        subject = "Activa tu cuenta de Todo's"
+        to = new_user.email
+
+        body = f"""
+                    <div>
+                        <h1>Bienvenido a nuestra plataforma</h1>
+                        <p>Para activar tu cuenta haz click en el siguiente enlace</p>
+                        <a href='{os.getenv("VITE_FRONTEND_URL")}/activate-account?token={recovery_token}'>Activar Cuenta</a>
+                    </div>
+
+                """
+        response = send_email(subject, to, body)
         return jsonify({"message": "user created succesfuly"}), 201
     except Exception as error:
         db.session.rollback()
@@ -153,7 +167,7 @@ def recovery_password():
                 <div>
                     <h1>Recuperación de contraseña, ingresa en el siguiente link</h1>
                     <a 
-                        href="https://chilling-spooky-hobgoblin-ppgwrqgxvg5hr9pr-3000.app.github.dev/password-update?token={recovery_token}"
+                        href="{os.getenv("VITE_FRONTEND_URL")}/password-update?token={recovery_token}"
                     >
                         ir a recuperar contraseña
                     </a>
@@ -196,3 +210,48 @@ def update_password():
             return jsonify({"message": "Error al actualizar la contraseña"}), 500
 
     return jsonify({"message": "Intentelo nuevamente, si el error persiste comuniquese con soporte"}), 400
+
+
+@api.route("/activate-account", methods=["PUT"])
+@jwt_required()
+def activate_account():
+    user_id = get_jwt_identity()
+
+    user = User.query.get(user_id)
+
+    if user is not None:
+        user.is_active = True
+
+    try:
+        db.session.commit()
+        return jsonify({"message": "User activated"}), 200
+    except Exception as error:
+        return jsonify({"message": "Error in account"}), 500
+
+
+@api.route("/forward-email",  methods=["GET"])
+@jwt_required()
+def forward_email():
+    user_id = get_jwt_identity()
+
+    user = User.query.get(user_id)
+
+    recovery_token = create_access_token(identity=str(
+        user.id), expires_delta=timedelta(minutes=15))
+    subject = "Activa tu cuenta de Todo's"
+    to = user.email
+
+    body = f"""
+                <div>
+                    <h1>Bienvenido a nuestra plataforma</h1>
+                    <p>Para activar tu cuenta haz click en el siguiente enlace</p>
+                    <a href='{os.getenv("VITE_FRONTEND_URL")}/activate-account?token={recovery_token}'>Activar Cuenta</a>
+                </div>
+
+            """
+    response = send_email(subject, to, body)
+
+    if response:
+        return jsonify({"message": "Email sended succesfully"}), 200
+    else:
+        return jsonify({"message": "Error"}), 500

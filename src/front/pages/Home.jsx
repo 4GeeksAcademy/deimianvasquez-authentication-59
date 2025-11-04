@@ -23,10 +23,9 @@ export const Home = () => {
 /*
 
 
-	1.- Al registrar usuario enviar correo de activación --> enviar correo
-	2.- Usar dos contraseñas para validar que sean iguales -->
 	3.- Cerrar sesión (Puede mejorar) --> 
-	4.- Lanzar a producción --> 
-	5.- Poner a funcionar todo el proyecto, back y fron no se entienden
+
+
+	5.- Lanzar a producción --> 
 
 */
