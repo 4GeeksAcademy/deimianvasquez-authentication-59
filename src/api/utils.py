@@ -147,7 +147,7 @@ def send_email(subject: str, to_email: str, html_content: str, from_email: str =
 
     # Crea el mensaje
     message = Mail(
-        from_email=Email(from_email, name="Tienda Mera"),
+        from_email=Email(from_email, "Tienda Mera"),
         to_emails=to_email,
         subject=subject,
         html_content=html
