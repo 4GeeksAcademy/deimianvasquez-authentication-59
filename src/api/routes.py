@@ -135,7 +135,7 @@ def me():
 
 @api.route("/send-mail", methods=["GET"])
 def send_mail():
-    subject = " Esta es una prueba de correo"
+    subject = "Test de correo electrónico"
     to = "dvasquez@4geeksacademy.com"
     body = """
                 <div>

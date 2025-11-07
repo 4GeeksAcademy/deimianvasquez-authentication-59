@@ -5,6 +5,8 @@ from email.mime.multipart import MIMEMultipart
 import smtplib
 import ssl
 import os
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Mail, Email
 
 
 class APIException(Exception):
@@ -87,38 +89,78 @@ def es_correo_valido(correo: str) -> bool:
 # print(f"email@.com: {es_correo_valido('email@.com')}")           # False (Dominio empieza con .)
 
 
-def send_email(subject, to, body):
-    smtp_host = os.getenv("SMTP_HOST")
-    smtp_port = int(os.getenv("SMTP_PORT"))
-    email_address = os.getenv("EMAIL_ADDRESS")
-    email_password = os.getenv("EMAIL_PASSWORD")
+# def send_email(subject, to, body):
+#     smtp_host = os.getenv("SMTP_HOST")
+#     smtp_port = int(os.getenv("SMTP_PORT"))
+#     email_address = os.getenv("EMAIL_ADDRESS")
+#     email_password = os.getenv("EMAIL_PASSWORD")
 
-    message = MIMEMultipart("alternative")
-    message["Subject"] = subject
-    message["From"] = email_address
-    message["To"] = to
+#     message = MIMEMultipart("alternative")
+#     message["Subject"] = subject
+#     message["From"] = email_address
+#     message["To"] = to
+
+#     html = """
+#                 <html>
+#                     <body>
+#                         """ + body + """
+#                     </body>
+#                 </html>
+#             """
+
+#     html_mime = MIMEText(html, "html")
+#     message.attach(html_mime)
+
+#     try:
+#         context = ssl.create_default_context()
+
+#         with smtplib.SMTP(smtp_host, smtp_port, timeout=10) as server:
+#             server.starttls(context=context)
+
+#             server.login(email_address, email_password)
+#             server.sendmail(email_address, to, message.as_string())
+#             return True
+
+#     except Exception as error:
+#         print(error.args)
+#         return False
+
+
+def send_email(subject: str, to_email: str, html_content: str, from_email: str = None) -> bool:
+    print("Simulando el envío de correo electrónico...")
 
     html = """
                 <html>
                     <body>
-                        """ + body + """                   
+                        """ + html_content + """
                     </body>
                 </html>
             """
 
-    html_mime = MIMEText(html, "html")
-    message.attach(html_mime)
+    # Si no se especifica remitente, usa la variable de entorno
+    if from_email is None:
+        from_email = os.getenv('SENDGRID_FROM_EMAIL')
 
+    if not from_email:
+        raise ValueError(
+            "No se ha especificado el remitente (from_email) ni la variable SENDGRID_FROM_EMAIL.")
+
+    # Crea el mensaje
+    message = Mail(
+        from_email=Email(from_email, name="Tienda Mera"),
+        to_emails=to_email,
+        subject=subject,
+        html_content=html
+    )
     try:
-        context = ssl.create_default_context()
+        sg = SendGridAPIClient(os.environ.get('SENDGRID_API_KEY'))
+        response = sg.send(message)
 
-        with smtplib.SMTP(smtp_host, smtp_port, timeout=10) as server:
-            server.starttls(context=context)
+        print(
+            f"📧 Correo enviado a {to_email} | Status: {response.status_code}")
 
-            server.login(email_address, email_password)
-            server.sendmail(email_address, to, message.as_string())
-            return True
+        return True
 
-    except Exception as error:
-        print(error.args)
+    except Exception as e:
+        print(f"❌ Error enviando correo: {e}")
         return False

@@ -23,7 +23,7 @@ const Register = () => {
 
 
     const handleFileChange = (event) => {
-        const file = event.target.file[0]
+        const file = event.target.files[0]
 
         setUser({
             ...user,
